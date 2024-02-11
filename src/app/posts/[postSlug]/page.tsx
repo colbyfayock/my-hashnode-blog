@@ -1,6 +1,7 @@
 import Image from 'next/image';
+import type { Metadata } from 'next';
 
-import { query } from '@/lib/hashnode';
+import { getPostBySlug } from '@/lib/posts';
 import { Post } from '@/types/posts';
 
 import Container from '@/components/Container';
@@ -9,40 +10,16 @@ interface PostParams {
   params: { postSlug: string }
 }
 
-export default async function Post({ params }: PostParams) {
-  const { data: { publication } } = await query({
-    query: `
-      query($host: String!, $slug: String!) {
-        publication(host: $host) {
-          post(slug: $slug) {
-            author {
-              name
-              profilePicture
-              socialMediaLinks {
-                twitter
-              }
-            }
-            content {
-              html
-            }
-            coverImage {
-              url
-            }
-            id
-            publishedAt
-            title
-          }
-        }
-      }
-    `,
-    variables: {
-      host: process.env.HASHNODE_HOST,
-      slug: params.postSlug
-    }
-  });
-  
-  const post = publication?.post as Post;
+export async function generateMetadata({ params }: PostParams): Promise<Metadata> {
+  const post = await getPostBySlug(params.postSlug);
+  return {
+    title: `${post.title} - Space Jelly`,
+    description: post.seo?.description || `Read ${post.title} on Space Jelly`
+  }
+}
 
+export default async function Post({ params }: PostParams) {
+  const post = await getPostBySlug(params.postSlug);
   return (
     <>
       <Container className="max-w-5xl xl:max-w-7xl xl:grid xl:grid-cols-[2fr_1fr] gap-12 mt-12 mb-24">

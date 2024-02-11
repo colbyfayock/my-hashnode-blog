@@ -1,42 +1,11 @@
 import Link from 'next/link';
 
-import { query } from '@/lib/hashnode';
+import { getPublication } from '@/lib/publication';
 
 import Container from '@/components/Container';
 
 export default async function Nav() {
-  const { data } = await query({
-    query: `
-      query($host: String) {
-        publication(host: $host) {
-          title
-          preferences {
-            navbarItems {
-              id
-              label
-              url
-            }
-          }
-        }
-      }
-    `,
-    variables: {
-      host: process.env.HASHNODE_HOST
-    }
-  });
-
-  interface Publication {
-    title?: string;
-    preferences?: {
-      navbarItems?: Array<{
-        id: string;
-        label: string;
-        url: string;
-      }>
-    }
-  }
-
-  const publication: Publication = data?.publication;
+  const publication = await getPublication();
 
   return (
     <nav className="py-8">

@@ -1,4 +1,6 @@
-import { query } from '@/lib/hashnode';
+import type { Metadata } from 'next';
+
+import { getPageBySlug } from '@/lib/pages';
 import { Page } from '@/types/pages';
 
 import Container from '@/components/Container';
@@ -7,30 +9,16 @@ interface PageParams {
   params: { pageSlug: string };
 }
 
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  const page = await getPageBySlug(params.pageSlug);
+  return {
+    title: `${page.title} - Space Jelly`,
+    description: page.seo?.description || `${page.title} on Space Jelly`
+  }
+}
+
 export default async function Page({ params }: PageParams) {
-  const { data: { publication } } = await query({
-    query: `
-      query($host: String!, $slug: String!) {
-        publication(host: $host) {
-          staticPage(slug: $slug) {
-            content {
-              html
-            }
-            id
-            slug
-            title
-          }
-        }
-      }
-    `,
-    variables: {
-      host: process.env.HASHNODE_HOST,
-      slug: params.pageSlug
-    }
-  });
-
-  const page = publication?.staticPage as Page;
-
+  const page = await getPageBySlug(params.pageSlug);
   return (
     <>
       <Container className="max-w-5xl xl:max-w-7xl mt-12 mb-24">

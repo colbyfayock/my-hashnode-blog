@@ -14,6 +14,9 @@ export interface Post {
   };
   id: string;
   publishedAt: string;
+  seo: {
+    description: string;
+  }
   slug: string;
   title: string;
 }

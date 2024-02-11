@@ -2,15 +2,18 @@ import './globals.css';
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google';
 
+import { getPublication } from '@/lib/publication';
+
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export async function generateMetadata(): Promise<Metadata> {
+  const publication = await getPublication();
   return {
-    title: 'My Blog',
-    description: 'My Blog',
+    title: publication.title,
+    description: publication.descriptionSEO,
   }
 }
 
