@@ -28,7 +28,7 @@ export default async function Home() {
       }
     `,
     variables: {
-      host: 'spacejelly.hashnode.dev'
+      host: process.env.HASHNODE_HOST
     }
   });
 

@@ -36,7 +36,7 @@ export default async function Post({ params }: PostParams) {
       }
     `,
     variables: {
-      host: 'spacejelly.hashnode.dev',
+      host: process.env.HASHNODE_HOST,
       slug: params.postSlug
     }
   });

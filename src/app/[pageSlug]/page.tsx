@@ -24,7 +24,7 @@ export default async function Page({ params }: PageParams) {
       }
     `,
     variables: {
-      host: 'spacejelly.hashnode.dev',
+      host: process.env.HASHNODE_HOST,
       slug: params.pageSlug
     }
   });
