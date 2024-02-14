@@ -15,6 +15,9 @@ export async function generateMetadata({ params }: PostParams): Promise<Metadata
   return {
     title: `${post.title} - Space Jelly`,
     description: post.seo?.description || `Read ${post.title} on Space Jelly`,
+
+    // IMPORTANT: Remove this from your own project if using this as a starting template
+    // This is a demo repository so this helps avoid duplicate content
     robots: {
       index: false,
       follow: false,
