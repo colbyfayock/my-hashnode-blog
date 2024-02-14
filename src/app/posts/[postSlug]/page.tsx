@@ -14,7 +14,15 @@ export async function generateMetadata({ params }: PostParams): Promise<Metadata
   const post = await getPostBySlug(params.postSlug);
   return {
     title: `${post.title} - Space Jelly`,
-    description: post.seo?.description || `Read ${post.title} on Space Jelly`
+    description: post.seo?.description || `Read ${post.title} on Space Jelly`,
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: {
+        index: false,
+        follow: false,
+      },
+    },
   }
 }
 
