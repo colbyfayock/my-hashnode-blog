@@ -11,6 +11,12 @@ const inter = Inter({ subsets: ['latin'] })
 
 export async function generateMetadata(): Promise<Metadata> {
   const publication = await getPublication();
+  if (!publication) {
+    return {
+      title: 'Space Jelly',
+      description: 'A Hashnode blog',
+    };
+  }
   return {
     title: publication.title,
     description: publication.descriptionSEO,

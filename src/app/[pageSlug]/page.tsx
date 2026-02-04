@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 import { getPageBySlug } from '@/lib/pages';
-import { Page } from '@/types/pages';
+import type { Page } from '@/types/pages';
 
 import Container from '@/components/Container';
 
@@ -11,6 +12,12 @@ interface PageParams {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const page = await getPageBySlug(params.pageSlug);
+  if (!page) {
+    return {
+      title: 'Page Not Found - Space Jelly',
+      description: 'The requested page could not be found.'
+    };
+  }
   return {
     title: `${page.title} - Space Jelly`,
     description: page.seo?.description || `${page.title} on Space Jelly`
@@ -19,6 +26,9 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 
 export default async function Page({ params }: PageParams) {
   const page = await getPageBySlug(params.pageSlug);
+  if (!page) {
+    return notFound();
+  }
   return (
     <>
       <Container className="max-w-5xl xl:max-w-7xl mt-12 mb-24">

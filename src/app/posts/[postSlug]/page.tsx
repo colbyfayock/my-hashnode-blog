@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 import { getPostBySlug } from '@/lib/posts';
-import { Post } from '@/types/posts';
+import type { Post } from '@/types/posts';
 
 import Container from '@/components/Container';
 
@@ -12,6 +13,12 @@ interface PostParams {
 
 export async function generateMetadata({ params }: PostParams): Promise<Metadata> {
   const post = await getPostBySlug(params.postSlug);
+  if (!post) {
+    return {
+      title: 'Post Not Found - Space Jelly',
+      description: 'The requested post could not be found.'
+    };
+  }
   return {
     title: `${post.title} - Space Jelly`,
     description: post.seo?.description || `Read ${post.title} on Space Jelly`,
@@ -31,6 +38,9 @@ export async function generateMetadata({ params }: PostParams): Promise<Metadata
 
 export default async function Post({ params }: PostParams) {
   const post = await getPostBySlug(params.postSlug);
+  if (!post) {
+    return notFound();
+  }
   return (
     <>
       <Container className="max-w-5xl xl:max-w-7xl xl:grid xl:grid-cols-[2fr_1fr] gap-12 mt-12 mb-24">

@@ -2,12 +2,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { query } from '@/lib/hashnode';
-import { Post } from '@/types/posts';
+import type { Post } from '@/types/posts';
 
 import Container from '@/components/Container';
 
 export default async function Home() {
-  const { data: { publication } } = await query({
+  const response = await query({
     query: `
       query($host: String!) {
         publication(host: $host) {
@@ -32,7 +32,7 @@ export default async function Home() {
     }
   });
 
-  const posts: Array<Post> = publication.posts.edges.map(({ node }: { node: Post }) => node);
+  const posts: Array<Post> = response?.data?.publication?.posts?.edges?.map(({ node }: { node: Post }) => node).filter(Boolean) || [];
 
   return (
     <>
