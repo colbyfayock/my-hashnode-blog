@@ -15,3 +15,4 @@ Demo for tutorial [How to Build a Blog with Next.js App Router & Headless Hashno
 📺 [Subscribe on YouTube](https://www.youtube.com/colbyfayock)
 
 ✉️ [Sign Up for My Newsletter](https://colbyfayock.com/newsletter)
+# Retrigger deployment
