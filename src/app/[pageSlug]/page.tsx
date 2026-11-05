@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 
 import { getPageBySlug } from '@/lib/pages';
-import { Page } from '@/types/pages';
 
 import Container from '@/components/Container';
 
 interface PageParams {
-  params: { pageSlug: string };
+  params: Promise<{ pageSlug: string }>;
 }
 
-export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+export async function generateMetadata(props: PageParams): Promise<Metadata> {
+  const params = await props.params;
   const page = await getPageBySlug(params.pageSlug);
   return {
     title: `${page.title} - Space Jelly`,
@@ -17,7 +17,8 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   }
 }
 
-export default async function Page({ params }: PageParams) {
+export default async function Page(props: PageParams) {
+  const params = await props.params;
   const page = await getPageBySlug(params.pageSlug);
   return (
     <>

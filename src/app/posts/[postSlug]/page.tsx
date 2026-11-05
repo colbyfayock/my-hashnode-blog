@@ -2,15 +2,15 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 
 import { getPostBySlug } from '@/lib/posts';
-import { Post } from '@/types/posts';
 
 import Container from '@/components/Container';
 
 interface PostParams {
-  params: { postSlug: string }
+  params: Promise<{ postSlug: string }>
 }
 
-export async function generateMetadata({ params }: PostParams): Promise<Metadata> {
+export async function generateMetadata(props: PostParams): Promise<Metadata> {
+  const params = await props.params;
   const post = await getPostBySlug(params.postSlug);
   return {
     title: `${post.title} - Space Jelly`,
@@ -29,7 +29,8 @@ export async function generateMetadata({ params }: PostParams): Promise<Metadata
   }
 }
 
-export default async function Post({ params }: PostParams) {
+export default async function Post(props: PostParams) {
+  const params = await props.params;
   const post = await getPostBySlug(params.postSlug);
   return (
     <>
