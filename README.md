@@ -6,7 +6,6 @@ Demo for tutorial [How to Build a Blog with Next.js App Router & Headless Hashno
 
 📺 YouTube: https://www.youtube.com/watch?v=fL3qUzRvBN4
 
-🚀 Demo: https://my-hashnode-blog.vercel.app/
 
 ## More tutorials and walkthroughs
 
